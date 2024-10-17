@@ -1,0 +1,16 @@
+/* GLOBAL STYLES */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.game-container {
+  margin: 10px 30px;
+}
+
+.locked {
+  display: none;
+}
