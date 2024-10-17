@@ -8,9 +8,10 @@ const resetButton = document.getElementById("reset-button");
 
 // GAME STATE
 // Initialise / retreive data from local storage
-let hobbits = parseInt(localStorage.getItem("hobbits")) || 499;
+let hobbits = parseInt(localStorage.getItem("hobbits")) || 0;
 let hps = parseInt(localStorage.getItem("hps")) || 0;
-let costMultiplier = 2;
+let musicOn = true;
+let musicPlaying = false;
 
 // Initialise upgrade array
 let upgradeArray = [];
@@ -22,6 +23,11 @@ setUpgrades();
 hobbitButton.addEventListener("click", generateHobbit);
 
 function generateHobbit() {
+  // Play theme on first hobbit generated
+  if (hobbits == 0 && hps == 0 && musicOn == true) {
+    const music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
+    music.play();
+  }
   hobbits += 1;
   hobbitDisplay.textContent = hobbits;
   unlockUpgrades();
@@ -39,7 +45,7 @@ function hobbitsPerSecond() {
   updateStorage();
 }
 
-// Update local storage
+// Function to update local storage
 function updateStorage(upgrade = null) {
   // Update hobbits and hobbits per second to local storage
   localStorage.setItem("hobbits", hobbits);
@@ -65,19 +71,19 @@ async function handleGetAPIUpgrades() {
   return await response.json();
 }
 
-// Function to update upgrade names then add them to the DOM and local storage
+// Function to update upgrade names then add them to the DOM
 async function setUpgrades() {
   upgradeArray = await handleGetAPIUpgrades();
   // New upgrade names
   const newNames = [
-    "Peace and Quiet",
     "Hobbit Hole",
+    "Peace and Quiet",
     "Good Tilled Earth",
     "Pint of Ale",
     "Old Toby",
     "Bakery",
-    "Mill",
     "Gandalf's Fireworks",
+    "Brewery",
     "Inn",
     "111tieth Birthday Party",
   ];
@@ -145,23 +151,32 @@ function upgradeListeners() {
 
 // Handles logic and updates when upgrades are purchased
 function buyNewUpgrade(elem) {
-  // let elem.costNext = parseInt();
   if (hobbits >= elem.costNext) {
     // Update DOM elements to reflect upgrade purchase
     hobbits = hobbits - elem.costNext;
     hobbitDisplay.textContent = hobbits;
     let currentValue = parseInt(elem.value.textContent);
     elem.value.textContent = currentValue += 1;
-    elem.costNext = elem.costNext * costMultiplier;
+    elem.costNext = elem.costNext + elem.cost;
     elem.costDisplay.textContent = elem.costNext;
-    // console.log(elem);
     let newHps = (hps += elem.increase);
     hpsDisplay.textContent = newHps;
-    // if (upgradeArray[elem+1].)
-    // console.log(upgradeArray[elem + 1]);
     updateStorage(elem);
+
+    // Play sound effects when upgrade purchased
+    if (musicOn == true && elem.name != "Hobbit Hole") {
+      const music = new Audio(`./assets/sounds/${elem.name}.mp3`);
+      // Only play if music is not already playing
+      if (!musicPlaying) {
+        music.play();
+        musicPlaying = true;
+        music.onended = function () {
+          musicPlaying = false;
+        };
+      }
+    }
   } else {
-    console.log("Insufficient Hobbits!");
+    console.log("Insufficient Hobbits!"); // TODO Display this notice to the user
   }
   unlockUpgrades();
 }
@@ -191,6 +206,12 @@ function unlockUpgrades() {
       currentElem++;
     });
   }
+}
+
+// Change the background image when a certain number of upgrades have been purchased
+function changeBackground() {
+  const body = document.querySelector("body");
+  body.style.backgroundImage = "url(./assets/images/)";
 }
 
 // Reset all values when reset button pressed

@@ -5,10 +5,18 @@
 
 body {
   margin: 0;
+  /* background-image: url("./assets/images/Scoured\ Shire.jpeg"); */
+  background-position: center;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
 }
 
 .game-container {
-  margin: 10px 30px;
+  margin: 10px 10px;
+  padding: 20px;
+  background-color: #ffffff80;
 }
 
 .locked {
@@ -22,3 +30,18 @@ body {
 #reset-button {
   margin-left: 500px;
 }
+
+/* TODO: 
+- Background (which changes dependent on number of hobbits or upgrades). Ensure updates are persistent with page reloads.
+- Style buttons
+- Align upgrade values under headings (table? grid? flex?) - may have to sort out in the JS. 
+- Perhaps add a tooltip to explain about the upgrades
+- Keep responsiveness and different devices in mind when designing the above (and anything else). 
+- Consider different fonts (can you import an LOTR font to use? 
+- Add menu with ability to turn music on/off (update the musicOn bool in app.js).
+- Consider adding cheats (probably to the above menu). 
+- Add menu with ability to turn music on/off (update the musicOn bool in app.js).  
+- Consider accessibility 
+- Refactor code as necessary
+- Review user requirements and stretch goals - have they all been met?
+- Update readme and add project review */
