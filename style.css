@@ -7,6 +7,7 @@ body {
   margin: 0;
 }
 
+/* SET OVERALL PAGE LAYOUT */
 #page-content {
   display: grid;
   grid-template: 1fr 6fr 4fr / 1fr;
@@ -15,55 +16,359 @@ body {
   height: 100vh;
 }
 
+/* HEADER AND GAME DATA */
 #game-data {
-  background-color: #000000dd;
+  background-color: #393227dd;
   width: 100vw;
-  /* height: 100px; */
+  height: 100%;
   color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-#image-tile {
+#game-data .game-stats {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#game-data .game-stats p {
+  font-size: 20px;
+}
+
+#hobbit-btn {
+  position: fixed;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 20px;
+  border: none;
+  font-family: cursive;
+  color: white;
+  background-color: #1a281f;
+}
+
+#hobbit-btn:hover {
+  box-shadow: 0px 0px 6px 6px #1a281f90;
+}
+
+/* IMAGE TILE - IMAGE UPDATES BASED ON USER PROGRESS */
+#image-display {
   background-image: url("./assets/images/Scoured\ Shire.jpeg");
   background-position: center;
   background-size: cover;
   width: 100vw;
-  /* height: 40vh; */
+  height: 100%;
+  min-height: 100%;
   max-width: 100%;
 }
 
-.game-container {
-  margin: 10px 10px;
+/* MAIN GAME SECTION - INFO, UPGRADES, OPTIONS */
+#game-container {
   padding: 20px;
-  background-color: #ffffff80;
+  background-color: #05080bdd;
+  color: white;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template: 3fr 5fr / 1fr;
+  font-family: cursive;
 }
 
-.locked {
+.game-bar {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+}
+
+.game-bar h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.game-bar h2 {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.game-bar h3 {
+  /* text-align: left; */
+  margin-bottom: 0px;
+}
+
+/* .upgrades {
+  display: grid;
+  grid-template: 1fr / repeat(11, 1fr);
+} */
+
+/* .upgrades {
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(11, 1fr);
+} */
+
+.options {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+}
+
+.options .options-button {
+  font-size: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+  outline: none;
+  padding: 8px 6px;
+  background-color: inherit;
+  font-family: inherit;
+  color: white;
+  margin: 0;
+}
+
+.options-content {
+  background-color: #f9f9f9;
   display: none;
+  right: 1px;
+  position: absolute;
+  z-index: 1;
+  min-width: 150px;
+  border-radius: 10px;
 }
 
-.game-container p span {
-  margin: 0px 10px;
+.options-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.options-content a:hover {
+  background-color: #ddd;
+}
+
+.options:hover .options-content {
+  display: block;
 }
 
 #toggle-music {
-  margin-left: 80vw;
+  margin-right: 10px;
 }
 
-#reset-button {
-  margin-left: 500px;
+#upgrade-display {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 10px;
+  font-family: serif;
+  /* align-items: stretch; */
+  /* display: grid;
+  grid-template: 1fr / repeat(11, 1fr);
+  height: 100%; */
+}
+
+/* .upgrade-headers p span {
+  display: block;
+  text-align: center;
+  padding: 5px 0px;
+} */
+
+#upgrade-display #upgrade-headers {
+  max-width: 100px;
+  font-weight: bold;
+}
+
+#upgrade-display #upgrade-headers span {
+  border: none;
+  /* border-top: 2px dashed white; */
+  border-bottom: 2px dashed white;
+  border-right: 2px dashed white;
+  text-align: center;
+  padding-right: 10px;
+  /* height: 100%; */
+  /* margin: 0px; */
+}
+
+#upgrade-display .cant-afford button {
+  background-color: grey;
+}
+
+#upgrade-display .cant-afford button:hover {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+#upgrade-display p {
+  display: grid;
+  grid-template: repeat(4, 1fr) / 1fr;
+  /* width: 100%; */
+  max-width: 80%;
+  /* max-width: 20%; */
+  height: 100%;
+  align-items: center;
+  margin-top: 0;
+}
+
+/* #upgrade-display p button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+} */
+
+#upgrade-display p button {
+  background-color: #5f4842aa;
+  color: white;
+  /* border: 10px solid #6b654b40; */
+  border-radius: 10px;
+  border: none;
+  padding: 5px;
+  width: 100px;
+  height: 50px;
+}
+/* #5F4842 */
+#upgrade-display p button:hover {
+  background-color: #5f4842ff;
+  box-shadow: 4px 4px 10px #6b654b;
+}
+
+#upgrade-display p span {
+  /* display: block; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+  /* border-right: 2px solid white; */
+  border-bottom: 2px solid white;
+  padding: 5px 0px;
+  height: 100%;
+  line-height: 100%;
+}
+
+#upgrade-display p span:first-child {
+  padding-top: 0px;
+}
+
+/* Upgrades given this class to hide by default and removed as user plays  */
+#upgrade-display .locked {
+  display: none;
+}
+
+/* Disable upgrade buttons when insufficient funds */
+/* .cant-afford {
+  background-color: #ffffffaa;
+} */
+
+/* Info/data for each upgrade */
+#game-container p span {
+  margin: 0px 10px;
+}
+
+@media (max-width: 1135px) {
+  #page-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #game-data {
+    display: grid;
+    grid-template: 1fr / repeat(2, 1fr);
+    position: relative;
+  }
+
+  #game-data .game-stats {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr;
+  }
+
+  #game-data .game-stats p {
+    font-size: 14px;
+    margin: 8px 10px;
+  }
+
+  #game-data .game-stats p:first-child {
+    margin-bottom: 4px;
+  }
+
+  #game-data .game-stats p:last-child {
+    margin-top: 0px;
+  }
+
+  #hobbit-btn {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    padding: 5px 10px;
+  }
+
+  #image-display {
+    min-height: 50vh;
+    width: 100%;
+    max-width: auto;
+  }
+
+  #game-container {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+  }
+
+  .game-bar .options-button {
+    font-size: 14px;
+    padding: 4px 6px;
+  }
+  .game-bar {
+    padding-top: 30px;
+  }
+
+  /* #upgrade-headers {
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+  } */
+
+  #upgrade-display {
+    display: flex;
+    flex-direction: column;
+    /* max-width: 100vw; */
+    /* display: grid;
+    grid-template: repeat(11, 1fr) / 1fr; */
+  }
+
+  #upgrade-display #upgrade-headers {
+    margin-top: 20px;
+  }
+
+  #upgrade-display p {
+    display: flex;
+    min-width: 100%;
+    /* justify-content: center; */
+    /* flex-direction: row; */
+  }
+
+  #upgrade-display p button {
+    width: 75%;
+  }
+
+  #upgrade-display p span {
+    width: 80%;
+  }
+
+  #upgrade-display p:last-child {
+    margin-bottom: 0px;
+  }
 }
 
 /* TODO: 
-- Background (which changes dependent on number of hobbits or upgrades). Ensure updates are persistent with page reloads.
-- Style buttons
-- Align upgrade values under headings (table? grid? flex?) - may have to sort out in the JS. 
-- Perhaps add a tooltip to explain about the upgrades
-- Keep responsiveness and different devices in mind when designing the above (and anything else). 
-- Consider different fonts (can you import an LOTR font to use? 
-- Add menu with ability to turn music on/off (update the musicOn bool in app.js).
-- Consider adding cheats (probably to the above menu). 
-- Add menu with ability to turn music on/off (update the musicOn bool in app.js).  
 - Consider accessibility 
 - Refactor code as necessary
+- Remove unused code, add comment sections
+- Consider adding try/catch 
 - Review user requirements and stretch goals - have they all been met?
-- Update readme and add project review */
+- Update readme and add project review 

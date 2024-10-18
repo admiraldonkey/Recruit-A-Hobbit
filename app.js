@@ -1,11 +1,18 @@
 // Get DOM Nodes
+const dataBar = document.getElementById("game-data");
+const gameBar = document.getElementById("game-container");
 const hobbitButton = document.getElementById("hobbit-btn");
 const hobbitDisplay = document.getElementById("hobbit-display");
 const hpsDisplay = document.getElementById("hps-display");
 const upgradeDisplay = document.getElementById("upgrade-display");
 const toggleMusicbutton = document.getElementById("toggle-music");
+const themeMusicButton = document.getElementById("theme-music-button");
+const imageDisplay = document.getElementById("image-display");
 // Temp button for easy local storage manipulation
 const resetButton = document.getElementById("reset-button");
+const cheatButton = document.getElementById("cheat-button");
+let music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
+// let soundEffects = new Audio("");
 
 // GAME STATE
 // Initialise / retreive data from local storage
@@ -22,10 +29,10 @@ if (bgIndex != 0) {
 if (typeof musicOn === "string") {
   if (musicOn == "true") {
     musicOn = true;
-    toggleMusicbutton.textContent = "Turn Music Off";
+    toggleMusicbutton.textContent = "Disable Sounds";
   } else {
     musicOn = false;
-    toggleMusicbutton.textContent = "Turn Music On";
+    toggleMusicbutton.textContent = "Enable Sounds";
   }
 }
 
@@ -33,6 +40,7 @@ if (typeof musicOn === "string") {
 let upgradeArray = [];
 // Call function to add upgrades to DOM & activate listeners
 setUpgrades();
+canAfford();
 
 // GAME LOGIC
 // Increase value when button clicked
@@ -41,17 +49,22 @@ hobbitButton.addEventListener("click", generateHobbit);
 function generateHobbit() {
   // Play theme on first hobbit generated
   if (hobbits == 0 && hps == 0 && musicOn == true) {
-    const music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
+    // music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
+    music.src = "./assets/sounds/Concerning Hobbits.mp3";
     music.play();
   }
   hobbits += 1;
-  if (hobbits == 1 && hps == 0) {
+  if (bgIndex == 0) {
+    bgIndex++;
+    changeBackground();
+  } else if (hobbits == 1 && hps == 0) {
     bgIndex++;
     changeBackground();
   }
   hobbitDisplay.textContent = hobbits;
   unlockUpgrades();
   updateStorage();
+  canAfford();
 }
 
 // Increase value by hps
@@ -63,6 +76,7 @@ function hobbitsPerSecond() {
   hpsDisplay.textContent = hps;
   unlockUpgrades();
   updateStorage();
+  canAfford();
 }
 
 // Function to update local storage
@@ -105,11 +119,13 @@ async function setUpgrades() {
     "Gandalf's Fireworks",
     "Brewery",
     "Inn",
-    "111tieth Birthday Party",
+    "111th Birthday Party",
   ];
-
   // Change names of the retreived API data and update the DOM to display upgrades
   for (let i = 0; i < upgradeArray.length; i++) {
+    // if (i < 0) {
+
+    // }
     upgradeArray[i].name = newNames[i];
     // Create DOM elements and give IDs
     const para = document.createElement("p");
@@ -185,22 +201,23 @@ function buyNewUpgrade(elem) {
 
     // Update background if first time buying certain upgrade
     if (elem.id == "1" && bgIndex <= 1) {
-      bgIndex++;
+      bgIndex = bgIndex = 2;
       changeBackground();
     }
     if (elem.id == "3" && bgIndex <= 2) {
-      bgIndex++;
+      bgIndex = bgIndex = 3;
       changeBackground();
     }
 
     // Play sound effects when upgrade purchased
     if (musicOn == true && elem.name != "Hobbit Hole") {
-      const music = new Audio(`./assets/sounds/${elem.name}.mp3`);
+      let soundEffects = new Audio(`./assets/sounds/${elem.name}.mp3`);
+      // soundEffects.src = `./assets/sounds/${elem.name}.mp3`;
       // Only play if music is not already playing
       if (!musicPlaying) {
-        music.play();
+        soundEffects.play();
         musicPlaying = true;
-        music.onended = function () {
+        soundEffects.onended = function () {
           musicPlaying = false;
         };
       }
@@ -238,16 +255,49 @@ function unlockUpgrades() {
   }
 }
 
+function canAfford() {
+  upgradeArray.forEach(function (elem) {
+    if (hobbits < elem.costNext) {
+      elem.button.parentElement.classList.add("cant-afford");
+    } else {
+      elem.button.parentElement.classList.remove("cant-afford");
+    }
+  });
+}
+
 // Change the background image when a certain actions are taken
 function changeBackground() {
-  const body = document.querySelector("body");
+  // const backgrounds = [
+  //   "./assets/images/Scoured Shire.jpeg",
+  //   "./assets/images/Walking Hobbits.jpeg",
+  //   "./assets/images/Hobbit Hole.jpeg",
+  //   "./assets/images/The Shire.jpeg",
+  // ];
   const backgrounds = [
-    "./assets/images/Scoured Shire.jpeg",
-    "./assets/images/Walking Hobbits.jpeg",
-    "./assets/images/Hobbit Hole.jpeg",
-    "./assets/images/The Shire.jpeg",
+    {
+      bg: "./assets/images/Scoured Shire.jpeg",
+      color1: "#393227dd",
+      color2: "#05080bdd",
+    },
+    {
+      bg: "./assets/images/Walking Hobbits.jpeg",
+      color1: "#829184dd",
+      color2: "#727927dd",
+    },
+    {
+      bg: "./assets/images/Hobbit Hole.jpeg",
+      color1: "#828f98dd",
+      color2: "#46570cdd",
+    },
+    {
+      bg: "./assets/images/The Shire.jpg",
+      color1: "#bc9c11dd",
+      color2: "#1c320fdd",
+    },
   ];
-  body.style.backgroundImage = `url("${backgrounds[bgIndex]}")`;
+  imageDisplay.style.backgroundImage = `url("${backgrounds[bgIndex].bg}")`;
+  dataBar.style.backgroundColor = backgrounds[bgIndex].color1;
+  gameBar.style.backgroundColor = backgrounds[bgIndex].color2;
   localStorage.setItem("bgindex", bgIndex);
 }
 
@@ -256,12 +306,34 @@ resetButton.addEventListener("click", resetValues);
 
 toggleMusicbutton.addEventListener("click", toggleMusic);
 
+themeMusicButton.addEventListener("click", restartTheme);
+
+cheatButton.addEventListener("click", (e) => {
+  hobbits = hobbits + 200000;
+  localStorage.setItem("hobbits", hobbits);
+});
+
+function restartTheme() {
+  music.pause();
+  // music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
+  music.src = "./assets/sounds/Concerning Hobbits.mp3";
+  music.currentTime = 0;
+  if (musicOn) {
+    music.play();
+  }
+}
+
 function toggleMusic() {
   musicOn = !musicOn;
   if (musicOn) {
-    toggleMusicbutton.textContent = "Turn Music Off";
+    toggleMusicbutton.textContent = "Disable Sounds";
+    // Continue playing paused music if it's set to the main theme tune
+    if (music.src.includes("Concerning")) {
+      music.play();
+    }
   } else {
-    toggleMusicbutton.textContent = "Turn Music On";
+    music.pause();
+    toggleMusicbutton.textContent = "Enable Sounds";
   }
   localStorage.setItem("music", musicOn);
 }
@@ -276,5 +348,8 @@ function resetValues() {
   upgradeArray.forEach(function (elem) {
     elem.value.textContent = 0;
     elem.costDisplay.textContent = elem.cost;
+    if (elem.id != 1) {
+      elem.button.parentElement.classList.add("locked");
+    }
   });
 }
