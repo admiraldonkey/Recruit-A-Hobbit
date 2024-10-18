@@ -5,11 +5,29 @@
 
 body {
   margin: 0;
-  /* background-image: url("./assets/images/Scoured\ Shire.jpeg"); */
+}
+
+#page-content {
+  display: grid;
+  grid-template: 1fr 6fr 4fr / 1fr;
+  max-width: 100%;
+  width: 100vw;
+  height: 100vh;
+}
+
+#game-data {
+  background-color: #000000dd;
+  width: 100vw;
+  /* height: 100px; */
+  color: white;
+}
+
+#image-tile {
+  background-image: url("./assets/images/Scoured\ Shire.jpeg");
   background-position: center;
   background-size: cover;
   width: 100vw;
-  height: 100vh;
+  /* height: 40vh; */
   max-width: 100%;
 }
 
@@ -25,6 +43,10 @@ body {
 
 .game-container p span {
   margin: 0px 10px;
+}
+
+#toggle-music {
+  margin-left: 80vw;
 }
 
 #reset-button {

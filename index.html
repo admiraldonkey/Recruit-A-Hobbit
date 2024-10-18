@@ -8,26 +8,31 @@
     <script src="./app.js" defer></script>
   </head>
   <body>
-    <div class="game-container">
-      <h1>West Farthing Expansion Initiative</h1>
-      <h2>
-        Hobbit Populations Have Dwindled In The Wake Of The Scouring Of The
-        Shire.
-      </h2>
-      <h2>Will You Help Its Denizens Repopulate?</h2>
-      <button id="hobbit-btn">Recruit Hobbit</button>
-      <button id="reset-button">(Testing) Clear Local Storage</button>
-      <div class="current-stats">
-        <p>Current Hobbits: <span id="hobbit-display">0</span></p>
-        <p>Hobbits Per Second: <span id="hps-display">0</span></p>
-      </div>
-      <h3>Purchase Upgrades And Incentives To Attract New Hobbits!</h3>
-      <p>
-        <span>Upgrade</span><span>Increase</span><span>Cost</span
-        ><span>Current Amount</span>
-      </p>
-      <div id="upgrade-display">
-        <!-- <p>Peace and Quiet</p> -->
+    <div id="page-content">
+      <header>
+        <div id="game-data"></div>
+      </header>
+      <div id="image-tile"></div>
+      <div class="game-container">
+        <h1>West Farthing Expansion Initiative</h1>
+        <h2>
+          Hobbit Populations Have Dwindled In The Wake Of The Scouring Of The
+          Shire.
+        </h2>
+        <button id="toggle-music">Turn Music Off</button>
+        <h2>Will You Help Its Denizens Repopulate?</h2>
+        <button id="hobbit-btn">Recruit Hobbit</button>
+        <button id="reset-button">(Testing) Clear Local Storage</button>
+        <div class="current-stats">
+          <p>Current Hobbits: <span id="hobbit-display">0</span></p>
+          <p>Hobbits Per Second: <span id="hps-display">0</span></p>
+        </div>
+        <h3>Purchase Upgrades And Incentives To Attract New Hobbits!</h3>
+        <p>
+          <span>Upgrade</span><span>Increase</span><span>Cost</span
+          ><span>Current Amount</span>
+        </p>
+        <div id="upgrade-display"></div>
       </div>
     </div>
   </body>

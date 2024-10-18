@@ -3,6 +3,7 @@ const hobbitButton = document.getElementById("hobbit-btn");
 const hobbitDisplay = document.getElementById("hobbit-display");
 const hpsDisplay = document.getElementById("hps-display");
 const upgradeDisplay = document.getElementById("upgrade-display");
+const toggleMusicbutton = document.getElementById("toggle-music");
 // Temp button for easy local storage manipulation
 const resetButton = document.getElementById("reset-button");
 
@@ -10,8 +11,23 @@ const resetButton = document.getElementById("reset-button");
 // Initialise / retreive data from local storage
 let hobbits = parseInt(localStorage.getItem("hobbits")) || 0;
 let hps = parseInt(localStorage.getItem("hps")) || 0;
-let musicOn = true;
+let musicOn = localStorage.getItem("music") || true;
 let musicPlaying = false;
+let bgIndex = parseInt(localStorage.getItem("bgindex")) || 0;
+// Update background based on local storage value
+if (bgIndex != 0) {
+  changeBackground();
+}
+// Retain music on/off setting and update bool + toggle button accordingly
+if (typeof musicOn === "string") {
+  if (musicOn == "true") {
+    musicOn = true;
+    toggleMusicbutton.textContent = "Turn Music Off";
+  } else {
+    musicOn = false;
+    toggleMusicbutton.textContent = "Turn Music On";
+  }
+}
 
 // Initialise upgrade array
 let upgradeArray = [];
@@ -29,6 +45,10 @@ function generateHobbit() {
     music.play();
   }
   hobbits += 1;
+  if (hobbits == 1 && hps == 0) {
+    bgIndex++;
+    changeBackground();
+  }
   hobbitDisplay.textContent = hobbits;
   unlockUpgrades();
   updateStorage();
@@ -163,6 +183,16 @@ function buyNewUpgrade(elem) {
     hpsDisplay.textContent = newHps;
     updateStorage(elem);
 
+    // Update background if first time buying certain upgrade
+    if (elem.id == "1" && bgIndex <= 1) {
+      bgIndex++;
+      changeBackground();
+    }
+    if (elem.id == "3" && bgIndex <= 2) {
+      bgIndex++;
+      changeBackground();
+    }
+
     // Play sound effects when upgrade purchased
     if (musicOn == true && elem.name != "Hobbit Hole") {
       const music = new Audio(`./assets/sounds/${elem.name}.mp3`);
@@ -208,14 +238,33 @@ function unlockUpgrades() {
   }
 }
 
-// Change the background image when a certain number of upgrades have been purchased
+// Change the background image when a certain actions are taken
 function changeBackground() {
   const body = document.querySelector("body");
-  body.style.backgroundImage = "url(./assets/images/)";
+  const backgrounds = [
+    "./assets/images/Scoured Shire.jpeg",
+    "./assets/images/Walking Hobbits.jpeg",
+    "./assets/images/Hobbit Hole.jpeg",
+    "./assets/images/The Shire.jpeg",
+  ];
+  body.style.backgroundImage = `url("${backgrounds[bgIndex]}")`;
+  localStorage.setItem("bgindex", bgIndex);
 }
 
 // Reset all values when reset button pressed
 resetButton.addEventListener("click", resetValues);
+
+toggleMusicbutton.addEventListener("click", toggleMusic);
+
+function toggleMusic() {
+  musicOn = !musicOn;
+  if (musicOn) {
+    toggleMusicbutton.textContent = "Turn Music Off";
+  } else {
+    toggleMusicbutton.textContent = "Turn Music On";
+  }
+  localStorage.setItem("music", musicOn);
+}
 
 // Function to clear and reset all values in DOM and local storage
 function resetValues() {
