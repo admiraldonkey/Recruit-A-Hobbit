@@ -5,14 +5,13 @@ const hobbitButton = document.getElementById("hobbit-btn");
 const hobbitDisplay = document.getElementById("hobbit-display");
 const hpsDisplay = document.getElementById("hps-display");
 const upgradeDisplay = document.getElementById("upgrade-display");
+const imageDisplay = document.getElementById("image-display");
+// Option buttons
 const toggleMusicbutton = document.getElementById("toggle-music");
 const themeMusicButton = document.getElementById("theme-music-button");
-const imageDisplay = document.getElementById("image-display");
-// Temp button for easy local storage manipulation
 const resetButton = document.getElementById("reset-button");
 const cheatButton = document.getElementById("cheat-button");
 let music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
-// let soundEffects = new Audio("");
 
 // GAME STATE
 // Initialise / retreive data from local storage
@@ -40,20 +39,22 @@ if (typeof musicOn === "string") {
 let upgradeArray = [];
 // Call function to add upgrades to DOM & activate listeners
 setUpgrades();
+// Apply styles to upgrades that player can't currently afford on load
 canAfford();
 
 // GAME LOGIC
 // Increase value when button clicked
 hobbitButton.addEventListener("click", generateHobbit);
 
+// Function to run every time Recruit Hobbit button is pressed
 function generateHobbit() {
   // Play theme on first hobbit generated
   if (hobbits == 0 && hps == 0 && musicOn == true) {
-    // music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
     music.src = "./assets/sounds/Concerning Hobbits.mp3";
     music.play();
   }
   hobbits += 1;
+  // Change image if first pressing button
   if (bgIndex == 0) {
     bgIndex++;
     changeBackground();
@@ -62,18 +63,21 @@ function generateHobbit() {
     changeBackground();
   }
   hobbitDisplay.textContent = hobbits;
+  // Runs functions to update values/styles as relevant
   unlockUpgrades();
   updateStorage();
   canAfford();
 }
 
-// Increase value by hps
+// Runs function every second
 setInterval(hobbitsPerSecond, 1000);
 
+// Increases the hobbit count by the current HPS value + updates page accordingly
 function hobbitsPerSecond() {
   hobbits = hobbits + hps;
   hobbitDisplay.textContent = hobbits;
   hpsDisplay.textContent = hps;
+  // Runs functions to update values/styles as relevant
   unlockUpgrades();
   updateStorage();
   canAfford();
@@ -108,7 +112,7 @@ async function handleGetAPIUpgrades() {
 // Function to update upgrade names then add them to the DOM
 async function setUpgrades() {
   upgradeArray = await handleGetAPIUpgrades();
-  // New upgrade names
+  // Change upgrade names
   const newNames = [
     "Hobbit Hole",
     "Peace and Quiet",
@@ -123,16 +127,14 @@ async function setUpgrades() {
   ];
   // Change names of the retreived API data and update the DOM to display upgrades
   for (let i = 0; i < upgradeArray.length; i++) {
-    // if (i < 0) {
-
-    // }
     upgradeArray[i].name = newNames[i];
-    // Create DOM elements and give IDs
+    // Create DOM elements for each upgrade
     const para = document.createElement("p");
     const button = document.createElement("button");
     const increase = document.createElement("span");
     const costSpan = document.createElement("span");
     const valueSpan = document.createElement("span");
+    // Give created DOM elements IDs for later access
     const buttonId = `upgrade-button-${upgradeArray[i].id}`;
     const costSpanId = `upgrade-cost-${upgradeArray[i].id}`;
     const valueSpanId = `upgrade-value-${upgradeArray[i].id}`;
@@ -188,7 +190,7 @@ function upgradeListeners() {
 // Handles logic and updates when upgrades are purchased
 function buyNewUpgrade(elem) {
   if (hobbits >= elem.costNext) {
-    // Update DOM elements to reflect upgrade purchase
+    // Update DOM elements & local storage to reflect upgrade purchase
     hobbits = hobbits - elem.costNext;
     hobbitDisplay.textContent = hobbits;
     let currentValue = parseInt(elem.value.textContent);
@@ -199,7 +201,7 @@ function buyNewUpgrade(elem) {
     hpsDisplay.textContent = newHps;
     updateStorage(elem);
 
-    // Update background if first time buying certain upgrade
+    // Update background & UI colours if first time buying certain upgrade
     if (elem.id == "1" && bgIndex <= 1) {
       bgIndex = bgIndex = 2;
       changeBackground();
@@ -209,10 +211,9 @@ function buyNewUpgrade(elem) {
       changeBackground();
     }
 
-    // Play sound effects when upgrade purchased
+    // Play sound effects when certain upgrade purchased
     if (musicOn == true && elem.name != "Hobbit Hole") {
       let soundEffects = new Audio(`./assets/sounds/${elem.name}.mp3`);
-      // soundEffects.src = `./assets/sounds/${elem.name}.mp3`;
       // Only play if music is not already playing
       if (!musicPlaying) {
         soundEffects.play();
@@ -222,13 +223,13 @@ function buyNewUpgrade(elem) {
         };
       }
     }
-  } else {
-    console.log("Insufficient Hobbits!"); // TODO Display this notice to the user
   }
+  // After purchase, update currently unlocked upgrades and ability to afford
   unlockUpgrades();
+  canAfford();
 }
 
-// Function to unlock new upgrades
+// Function to unlock new upgrades (unhide them in the DOM)
 function unlockUpgrades() {
   // Only loop through if there are still locked upgrades
   if (
@@ -255,6 +256,7 @@ function unlockUpgrades() {
   }
 }
 
+// Function to check if user can afford each upgrade and style the purchase button accordingly
 function canAfford() {
   upgradeArray.forEach(function (elem) {
     if (hobbits < elem.costNext) {
@@ -265,14 +267,8 @@ function canAfford() {
   });
 }
 
-// Change the background image when a certain actions are taken
+// Change the background image and UI colours when certain actions are taken
 function changeBackground() {
-  // const backgrounds = [
-  //   "./assets/images/Scoured Shire.jpeg",
-  //   "./assets/images/Walking Hobbits.jpeg",
-  //   "./assets/images/Hobbit Hole.jpeg",
-  //   "./assets/images/The Shire.jpeg",
-  // ];
   const backgrounds = [
     {
       bg: "./assets/images/Scoured Shire.jpeg",
@@ -301,21 +297,15 @@ function changeBackground() {
   localStorage.setItem("bgindex", bgIndex);
 }
 
-// Reset all values when reset button pressed
-resetButton.addEventListener("click", resetValues);
-
+// Event listeners to run functions on choosing options under options menu
 toggleMusicbutton.addEventListener("click", toggleMusic);
-
 themeMusicButton.addEventListener("click", restartTheme);
+resetButton.addEventListener("click", resetValues);
+cheatButton.addEventListener("click", cheat);
 
-cheatButton.addEventListener("click", (e) => {
-  hobbits = hobbits + 200000;
-  localStorage.setItem("hobbits", hobbits);
-});
-
+// Function to restart and begin playing the main theme tune (if sound is turned on)
 function restartTheme() {
   music.pause();
-  // music = new Audio("./assets/sounds/Concerning Hobbits.mp3");
   music.src = "./assets/sounds/Concerning Hobbits.mp3";
   music.currentTime = 0;
   if (musicOn) {
@@ -323,6 +313,7 @@ function restartTheme() {
   }
 }
 
+// Function to enable or disable music and sound effects
 function toggleMusic() {
   musicOn = !musicOn;
   if (musicOn) {
@@ -352,4 +343,25 @@ function resetValues() {
       elem.button.parentElement.classList.add("locked");
     }
   });
+}
+
+// Cheat function to quickly gain 200,000 hobbits (and receive an insult from Bilbo)
+function cheat() {
+  hobbits = hobbits + 200000;
+  unlockUpgrades();
+  updateStorage();
+  canAfford();
+  bgIndex = 3;
+  changeBackground();
+  if (musicOn == true) {
+    let soundEffects = new Audio(`./assets/sounds/Bilbo's Insult.mp3`);
+    // Only play if music is not already playing
+    if (!musicPlaying) {
+      soundEffects.play();
+      musicPlaying = true;
+      soundEffects.onended = function () {
+        musicPlaying = false;
+      };
+    }
+  }
 }

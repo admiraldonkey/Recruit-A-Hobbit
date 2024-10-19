@@ -27,6 +27,7 @@ body {
   align-items: center;
 }
 
+/* Current hobbits/ hps display */
 #game-data .game-stats {
   width: 100vw;
   height: 100%;
@@ -39,6 +40,7 @@ body {
   font-size: 20px;
 }
 
+/* Generate hobbit button */
 #hobbit-btn {
   position: fixed;
   padding: 10px;
@@ -79,6 +81,7 @@ body {
   font-family: cursive;
 }
 
+/* Game description and option menu section */
 .game-bar {
   position: relative;
   justify-content: center;
@@ -96,20 +99,10 @@ body {
 }
 
 .game-bar h3 {
-  /* text-align: left; */
   margin-bottom: 0px;
 }
 
-/* .upgrades {
-  display: grid;
-  grid-template: 1fr / repeat(11, 1fr);
-} */
-
-/* .upgrades {
-  display: grid;
-  grid-template: repeat(4, 1fr) / repeat(11, 1fr);
-} */
-
+/* Drop down options menu */
 .options {
   position: absolute;
   right: 1px;
@@ -156,10 +149,7 @@ body {
   display: block;
 }
 
-#toggle-music {
-  margin-right: 10px;
-}
-
+/* Upgrade section for increasing Hobbits Per Second */
 #upgrade-display {
   display: flex;
   justify-content: space-evenly;
@@ -167,17 +157,7 @@ body {
   height: 100%;
   padding-bottom: 10px;
   font-family: serif;
-  /* align-items: stretch; */
-  /* display: grid;
-  grid-template: 1fr / repeat(11, 1fr);
-  height: 100%; */
 }
-
-/* .upgrade-headers p span {
-  display: block;
-  text-align: center;
-  padding: 5px 0px;
-} */
 
 #upgrade-display #upgrade-headers {
   max-width: 100px;
@@ -186,15 +166,13 @@ body {
 
 #upgrade-display #upgrade-headers span {
   border: none;
-  /* border-top: 2px dashed white; */
   border-bottom: 2px dashed white;
   border-right: 2px dashed white;
   text-align: center;
   padding-right: 10px;
-  /* height: 100%; */
-  /* margin: 0px; */
 }
 
+/* Style upgrades that player can't currently afford */
 #upgrade-display .cant-afford button {
   background-color: grey;
 }
@@ -204,47 +182,34 @@ body {
   cursor: not-allowed;
 }
 
+/* Info & current stats for each upgrade */
 #upgrade-display p {
   display: grid;
   grid-template: repeat(4, 1fr) / 1fr;
-  /* width: 100%; */
   max-width: 80%;
-  /* max-width: 20%; */
   height: 100%;
   align-items: center;
   margin-top: 0;
 }
 
-/* #upgrade-display p button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 80%;
-} */
-
 #upgrade-display p button {
   background-color: #5f4842aa;
   color: white;
-  /* border: 10px solid #6b654b40; */
   border-radius: 10px;
   border: none;
   padding: 5px;
   width: 100px;
   height: 50px;
 }
-/* #5F4842 */
 #upgrade-display p button:hover {
   background-color: #5f4842ff;
   box-shadow: 4px 4px 10px #6b654b;
 }
 
 #upgrade-display p span {
-  /* display: block; */
   display: flex;
   justify-content: center;
   align-items: center;
-  /* text-align: center; */
-  /* border-right: 2px solid white; */
   border-bottom: 2px solid white;
   padding: 5px 0px;
   height: 100%;
@@ -260,16 +225,7 @@ body {
   display: none;
 }
 
-/* Disable upgrade buttons when insufficient funds */
-/* .cant-afford {
-  background-color: #ffffffaa;
-} */
-
-/* Info/data for each upgrade */
-#game-container p span {
-  margin: 0px 10px;
-}
-
+/* Change UI if screen smaller than 1135px */
 @media (max-width: 1135px) {
   #page-content {
     display: flex;
@@ -327,18 +283,10 @@ body {
     padding-top: 30px;
   }
 
-  /* #upgrade-headers {
-    min-width: 100%;
-    display: flex;
-    flex-direction: row;
-  } */
-
+  /* Force upgrades to display vertically for easier screen navigation on mobile */
   #upgrade-display {
     display: flex;
     flex-direction: column;
-    /* max-width: 100vw; */
-    /* display: grid;
-    grid-template: repeat(11, 1fr) / 1fr; */
   }
 
   #upgrade-display #upgrade-headers {
@@ -348,8 +296,6 @@ body {
   #upgrade-display p {
     display: flex;
     min-width: 100%;
-    /* justify-content: center; */
-    /* flex-direction: row; */
   }
 
   #upgrade-display p button {
@@ -364,11 +310,3 @@ body {
     margin-bottom: 0px;
   }
 }
-
-/* TODO: 
-- Consider accessibility 
-- Refactor code as necessary
-- Remove unused code, add comment sections
-- Consider adding try/catch 
-- Review user requirements and stretch goals - have they all been met?
-- Update readme and add project review 
