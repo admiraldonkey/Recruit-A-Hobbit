@@ -2,7 +2,7 @@
 
 ### The West Farthing Resettlement Initiative
 
-Browser based idle game where you recruit hobbits and purchase upgrades to help repopulate The Shire.
+Software Development Bootcamp - Week 3 Project - Browser based idle game where you recruit hobbits and purchase upgrades to help repopulate The Shire.
 
 # Features
 
